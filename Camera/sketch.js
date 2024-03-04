@@ -1,21 +1,29 @@
 let capture;
 
+var startTime;
 function setup() {
   createCanvas(windowWidth,windowHeight);
   capture = createCapture(VIDEO);
-  capture.size(windowWidth,windowHeight);
+  capture.size(1680,1050);
   capture.hide(); 
 }
 
 function draw() {
-  background(200);
-  image(capture, 0, 0, windowWidth, windowHeight);
+  background(0);
+  image(capture, 0, 0, 1280, 650);
   textSize(30);
-  fill(0);
-  tint(255,255)
-  text(hour() +":"+minute()+":"+second(), windowWidth-125, 30); 
+  fill(125,199,52);
+  // tint(255,255)
+  text(hour() +":"+minute()+":"+second(), windowWidth-140, 30); 
+  text(millis(), windowWidth-140, 70);
   circle(mouseX, mouseY, 20);
-  // resizeCanvas();
+  //resizeCanvas();
+}
+function keyPressed(){
+  if(key =='s'){
+    startTime=millis();
+    currentTime=startTime-currentTime;
+  }
 }
 
 /*
