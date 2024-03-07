@@ -1,6 +1,6 @@
 let capture;
 
-let startTime, currentTime, start_button, reset_button;
+let startTime=0, currentTime, flagTime = 0, start_button, reset_button;
 function setup() {
   createCanvas(windowWidth,windowHeight);
   console.log("Canvas Created successfully");
@@ -20,61 +20,42 @@ function setup() {
 }
 
 function draw() {
-  background(145);
-  image(capture, 0, 0, 1280, 650);
+
+  background(0);
+
+  image(capture, 0, 0, 1056, 561);
+
   textSize(30);
   fill(125,199,52);
   text(hour() +":"+minute()+":"+second(), windowWidth-140, 30); 
-  text(millis(), windowWidth-140, 70);
   circle(mouseX, mouseY, 20);
-if (startTime > 0) {
-  currentTime = millis() - startTime;
-  // startTime=millis();
-  // currentTime=startTime-currentTime;
-  // text("Hello", windowWidth-140, 70);
- }
- if (startButton.mouseIsPressed) {
-  console.log("Start button pressed"); // Log to console instead of `log`
-  if (startTime === 0) { // Start timer only if not already running
-    startTime = millis();
+  start_button.mousePressed(startButton);
+  reset_button.mousePressed(resetButton);
+  if(flagTime == 0)
+  {
+  updateTime();
+  text(floor(currentTime/60000).toString().padStart(2,'0')+":"+(floor(currentTime/1000)%60).toString().padStart(2,'0')+":" + (currentTime)%1000, windowWidth-140, 70);
+  }
+  
+  if(flagTime == 1)
+  {
+    text(floor(currentTime/60000)+":"+floor(currentTime/1000)%60+":" + (currentTime)%1000, windowWidth-140, 70);
   }
 }
-function mousePressed(){
-  if (start_button.mouseIsPressed) {
-    console.log("Start button pressed"); // Log to console instead of `log`
-    if (startTime === 0) { // Start timer only if not already running
-      startTime = millis();
-    }
-  }
 
-  // Handle Stop/Reset button click
-  if (reset_button.mouseIsPressed) {
-    console.log("Stop/Reset button pressed");
-    startTime = 0; // Reset timer
-  }
+function startButton()
+{
+  flagTime = 0;
+  console.log("Start button pressed"); 
+  startTime = millis();
 }
+function resetButton()
+{
+  flagTime = 1
+  console.log("reset button pressed");
+
 }
-
-
-  // if(key =='s'){
-  //   startTime=millis();
-  //   currentTime=startTime-currentTime;
-  //   text(currentTime, windowWidth-140, 70);
-  // }
-
-
-/*
-let capture;
-
-function setup() {
-  createCanvas(390, 240);
-  capture = createCapture(VIDEO);
-  capture.size(320, 240);
-  //capture.hide();
+function updateTime()
+{
+  currentTime=millis()-startTime;
 }
-
-function draw() {
-  background(255);
-  image(capture, 0, 0, 320, 240);
-  filter(INVERT);
-}*/
