@@ -5,7 +5,7 @@ function setup() {
   createCanvas(windowWidth,windowHeight);
   console.log("Canvas Created successfully");
   capture = createCapture(VIDEO);
-  capture.size(1680,1050);
+  capture.size(1680,1080);
   console.log("Video Capture generated successfully");
   capture.hide(); // hide original feed
   console.log("Raw Video Hidden");
