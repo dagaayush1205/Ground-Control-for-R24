@@ -20,7 +20,7 @@ function setup() {
 }
 
 function draw() {
-
+  console.log(windowWidth+","+windowHeight);
   background(0);
 
   image(capture, 0, 0, 1056, 561);
@@ -29,6 +29,8 @@ function draw() {
   fill(125,199,52);
   text(hour() +":"+minute()+":"+second(), windowWidth-140, 30); 
   circle(mouseX, mouseY, 20);
+  
+  //StopWatch
   start_button.mousePressed(startButton);
   reset_button.mousePressed(resetButton);
   if(flagTime == 0)
@@ -41,6 +43,11 @@ function draw() {
   {
     text(floor(currentTime/60000)+":"+floor(currentTime/1000)%60+":" + (currentTime)%1000, windowWidth-140, 70);
   }
+  fill(0,0,0,0);
+  stroke(125,199,52);
+  circle(windowWidth-85,400,150);
+  arc(windowWidth-85,400,150,150,0,PI,CHORD);
+  
 }
 
 function startButton()
