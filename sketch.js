@@ -1,7 +1,7 @@
 let capture;
 
 let startTime=0, currentTime, flagTime = 0, start_button, reset_button, ACR = 190, SCR = 180, horizon_x, horizon_y, Currentspeed, maxSpeed=12, speedometer_x, speedometer_y;
-
+let signalStrength = 90, compass_x, compass_y;
 //ACR is the radius of the artificial horizon
 //SCR is the radius of the speedometer
 function setup() {
@@ -18,9 +18,9 @@ function setup() {
    //Button for start
    start_button = createButton('Start');
    //Button for stop and reset
-   start_button.position(windowWidth-140, 90)
+   start_button.position(windowWidth-160, 55)
    reset_button = createButton('Stop/Reset');
-   reset_button.position(windowWidth-90, 90);
+   reset_button.position(windowWidth-110, 55);
    console.log("Button generated");
 
    //angleMode
@@ -28,19 +28,22 @@ function setup() {
    console.log("Angle mode is set to from radians to degrees");
    
    frameRate(10);
-   console.log("frame rate set to 30");
+   console.log("frame rate set to 10");
 }
 
 function draw() {
-  horizon_x = windowWidth-100, horizon_y=250;
-  speedometer_x = windowWidth-100, speedometer_y= 450;
+  horizon_x = windowWidth-1300, horizon_y=750;
+  speedometer_x = windowWidth-800, speedometer_y= 750;
   background(0);
+  fill(50,50,50,256);
+  noStroke();
+  quad(windowWidth,windowHeight,windowWidth,windowHeight-30,0,windowHeight-30, 0, windowHeight);
   image(capture, 0, 0, 1056, 561);
   noStroke();
   textSize(30);
   fill(125,199,52);
   textSize(20);
-  text(hour().toString().padStart(2,'0') +":"+minute().toString().padStart(2,'0')+":"+second().toString().padStart(2,'0'), windowWidth-100, 670); 
+  text(hour().toString().padStart(2,'0') +":"+minute().toString().padStart(2,'0')+":"+second().toString().padStart(2,'0'), windowWidth-100, 905); 
   textSize(30);
   
   //StopWatch
@@ -49,12 +52,12 @@ function draw() {
   if(flagTime == 0)
   {
   updateTime();
-  text(floor(currentTime/60000).toString().padStart(2,'0')+":"+(floor(currentTime/1000)%60).toString().padStart(2,'0')+":" + ((currentTime)%1000).toString().padStart(3,'0'), windowWidth-140, 70);
+  text(floor(currentTime/60000).toString().padStart(2,'0')+":"+(floor(currentTime/1000)%60).toString().padStart(2,'0')+":" + ((currentTime)%1000).toString().padStart(3,'0'), windowWidth-160, 40);
 }
   
   if(flagTime == 1)
   {
-    text(floor(currentTime/60000).toString().padStart(2,'0')+":"+(floor(currentTime/1000)%60).toString().padStart(2,'0')+":" +((currentTime)%1000).toString().padStart(3,'0'), windowWidth-140, 70);
+    text(floor(currentTime/60000).toString().padStart(2,'0')+":"+(floor(currentTime/1000)%60).toString().padStart(2,'0')+":" +((currentTime)%1000).toString().padStart(3,'0'), windowWidth-160, 40);
   }
 
   // Artificial Horizon
@@ -64,12 +67,20 @@ function draw() {
 
   console.log("Artificial Horizon layout deployed generated");
   speed();
-  
+  textSize(11);
+  strokeWeight(0.9);
+  fill(125,199,52);
+  text("Signal:   "+signalStrength+"%",windowWidth-180, 903);
+  compass();
 }
 
 
-
-
+function compass()
+{ compass_x = windowWidth-1050, compass_y=750;
+  fill(0,0,0,0);
+  stroke(125,199,52);
+  circle(compass_x,compass_y,ACR);
+}
 
 function startButton()
 {
@@ -108,6 +119,7 @@ function artificialHorizon()
     line(horizon_x+ACR/2*cos(i),horizon_y+ACR/2*sin(i), horizon_x-ACR/2*cos(i),horizon_y-ACR/2*sin(i));
   }
 }
+
 function speed()
 {
   fill(0,0,0,0);
