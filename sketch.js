@@ -1,7 +1,7 @@
 let capture;
 
 let startTime=0, currentTime, flagTime = 0, start_button, reset_button, ACR = 190, SCR = 180, horizon_x, horizon_y, Currentspeed, maxSpeed=12, speedometer_x, speedometer_y;
-let signalStrength = 90, compass_x, compass_y;
+let signalStrength = 90, compass_x, compass_y, battery = 98;
 //ACR is the radius of the artificial horizon
 //SCR is the radius of the speedometer
 function setup() {
@@ -27,8 +27,8 @@ function setup() {
    angleMode(DEGREES);
    console.log("Angle mode is set to from radians to degrees");
    
-   frameRate(10);
-   console.log("frame rate set to 10");
+   frameRate(1000);
+   console.log("frame rate set to 30");
 }
 
 function draw() {
@@ -71,10 +71,20 @@ function draw() {
   strokeWeight(0.9);
   fill(125,199,52);
   text("Signal:   "+signalStrength+"%",windowWidth-180, 903);
+  text("battery: "+battery+"%",windowWidth-260, 903);
   compass();
+  throttle();
 }
 
+function throttle()
+{
+  let t = frameCount;
+  let x = 1200;
+  let y = 100 * sin(t) +300;//  let y = 100 * map(x,0,max,-1,+1) +300;
+  line(1200, 200, 1200, 400);
+  circle(x, y, 10);
 
+}
 function compass()
 { compass_x = windowWidth-1050, compass_y=750;
   fill(0,0,0,0);
@@ -136,8 +146,9 @@ function speed()
   line( map(Currentspeed,0,maxSpeed,0,));
   pop();
 }
-//battery
-//throttle
+//battery done
+//throttle done
 //speedometer
-//signal strength
+//signal strength done
 //compass
+//add digital values for all
