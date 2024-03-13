@@ -1,6 +1,6 @@
 let capture;
 
-let startTime=0, currentTime, flagTime = 0, start_button, reset_button, ACR = 190, SCR = 180, horizon_x, horizon_y, Currentspeed, maxSpeed=12, speedometer_x, speedometer_y;
+let startTime=0, currentTime, flagTime = 0, start_button, reset_button, ACR = 190, SCR = 180, horizon_x, horizon_y, currentSpeed=1, maxSpeed=7, speedometer_x, speedometer_y;
 let signalStrength = 90, compass_x, compass_y, battery = 98;
 //ACR is the radius of the artificial horizon
 //SCR is the radius of the speedometer
@@ -32,8 +32,8 @@ function setup() {
 }
 
 function draw() {
-  horizon_x = windowWidth-1150, horizon_y=windowHeight-150;
-  speedometer_x = windowWidth-650, speedometer_y= windowHeight-150;
+  horizon_x = windowWidth-1150, horizon_y=windowHeight-130;
+  speedometer_x = windowWidth-650, speedometer_y= windowHeight-130;
   background(0);
   fill(50,50,50,256);
   noStroke();
@@ -77,7 +77,7 @@ function draw() {
 
 function throttle()
 {
-  let t = frameCount;
+  let t = frameCount*frameCount/100;
   let x = 1200;
   let y = 100 * sin(t) +300;//  let y = 100 * map(x,0,max,-1,+1) +300;
   strokeWeight(3);
@@ -87,10 +87,20 @@ function throttle()
 
 }
 function compass()
-{ compass_x = windowWidth-900, compass_y=windowHeight-150;
+{ compass_x = windowWidth-900, compass_y=windowHeight-130;
   fill(0,0,0,0);
   stroke(125,199,52);
   circle(compass_x,compass_y,ACR);
+  for(let i=0;i<=360 ;i+=15)
+  {
+    strokeWeight(3);
+    let mark = map(i,0,360,0,360);
+    line(compass_x+(ACR/2 * sin(mark)),compass_y+(ACR/2 * cos(mark)),compass_x+(((ACR/2)-5) * sin(mark)), compass_y+((ACR/2)-5) * cos(mark));
+    textSize(8);
+    fill(125,199,52);
+    strokeWeight(0.1);
+    text(i,compass_x+(((ACR/2)-15) * sin(mark)), compass_y+((ACR/2)-15) * cos(mark));
+  }
 }
 
 function startButton()
@@ -137,19 +147,25 @@ function speed()
   stroke(125,199,52); 
   strokeWeight(0.7);
   circle(speedometer_x, speedometer_y, SCR, SCR);
-
+  currentSpeed=0;
+  fill(125,199,52,255);
   for(let i=0;i<=maxSpeed;i++)
   {
     strokeWeight(3);
-    circle(speedometer_x+SCR/2*cos(map(i,0,20,200,0)),speedometer_y+SCR/2*sin(map(i,0,20,200,0)),2);
+    let mark = map(i,0,maxSpeed,300,60);
+    line(speedometer_x+(SCR/2 * sin(mark)),speedometer_y+(SCR/2 * cos(mark)),speedometer_x+(((SCR/2)-5) * sin(mark)), speedometer_y+((SCR/2)-5) * cos(mark));
+    textSize(10);
+    strokeWeight(0.5);
+    text(i,speedometer_x+(((SCR/2)-15) * sin(mark)), speedometer_y+((SCR/2)-15) * cos(mark));
   }
-  push();
-  line( map(Currentspeed,0,maxSpeed,0,));
-  pop();
+  let needle = map(currentSpeed,0,maxSpeed,300,60);
+  strokeWeight(2);
+  line(speedometer_x, speedometer_y,speedometer_x + ((SCR/2-5) * sin(needle)),speedometer_y + ((SCR/2-5) * cos(needle)));
 }
 //battery done
 //throttle done
-//speedometer
+//speedometer done
 //signal strength done
 //compass
 //add digital values for all
+//async in js
