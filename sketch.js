@@ -27,23 +27,22 @@ function setup() {
    angleMode(DEGREES);
    console.log("Angle mode is set to from radians to degrees");
    
-   frameRate(1000);
-   console.log("frame rate set to 30");
+   frameRate(500);
+   console.log("frame rate set to 500");
 }
 
 function draw() {
-  horizon_x = windowWidth-1300, horizon_y=750;
-  speedometer_x = windowWidth-800, speedometer_y= 750;
+  horizon_x = windowWidth-1150, horizon_y=windowHeight-150;
+  speedometer_x = windowWidth-650, speedometer_y= windowHeight-150;
   background(0);
   fill(50,50,50,256);
   noStroke();
   quad(windowWidth,windowHeight,windowWidth,windowHeight-30,0,windowHeight-30, 0, windowHeight);
   image(capture, 0, 0, 1056, 561);
-  noStroke();
   textSize(30);
-  fill(125,199,52);
+  fill(125,199,52,255);
   textSize(20);
-  text(hour().toString().padStart(2,'0') +":"+minute().toString().padStart(2,'0')+":"+second().toString().padStart(2,'0'), windowWidth-100, 905); 
+  text(hour().toString().padStart(2,'0') +":"+minute().toString().padStart(2,'0')+":"+second().toString().padStart(2,'0'), windowWidth-100, windowHeight-10); 
   textSize(30);
   
   //StopWatch
@@ -68,10 +67,10 @@ function draw() {
   console.log("Artificial Horizon layout deployed generated");
   speed();
   textSize(11);
-  strokeWeight(0.9);
+  noStroke();
   fill(125,199,52);
-  text("Signal:   "+signalStrength+"%",windowWidth-180, 903);
-  text("battery: "+battery+"%",windowWidth-260, 903);
+  text("Signal: "+signalStrength+"%", windowWidth-170, windowHeight-13);
+  text("battery: "+battery+"%", windowWidth-250, windowHeight-13);
   compass();
   throttle();
 }
@@ -81,12 +80,14 @@ function throttle()
   let t = frameCount;
   let x = 1200;
   let y = 100 * sin(t) +300;//  let y = 100 * map(x,0,max,-1,+1) +300;
+  strokeWeight(3);
   line(1200, 200, 1200, 400);
+  strokeWeight(2);
   circle(x, y, 10);
 
 }
 function compass()
-{ compass_x = windowWidth-1050, compass_y=750;
+{ compass_x = windowWidth-900, compass_y=windowHeight-150;
   fill(0,0,0,0);
   stroke(125,199,52);
   circle(compass_x,compass_y,ACR);
