@@ -27,7 +27,7 @@ function setup() {
    angleMode(DEGREES);
    console.log("Angle mode is set to from radians to degrees");
    
-   frameRate(500);
+   frameRate(60);
    console.log("frame rate set to 500");
 }
 
@@ -77,7 +77,7 @@ function draw() {
 
 function throttle()
 {
-  let t = frameCount*frameCount/100;
+let t = frameCount;
   let x = 1200;
   let y = 100 * sin(t) +300;//  let y = 100 * map(x,0,max,-1,+1) +300;
   strokeWeight(3);
@@ -91,15 +91,26 @@ function compass()
   fill(0,0,0,0);
   stroke(125,199,52);
   circle(compass_x,compass_y,ACR);
-  for(let i=0;i<=360 ;i+=15)
+  for(let i=0;i<360 ;i+=30)
   {
     strokeWeight(3);
-    let mark = map(i,0,360,0,360);
+    let mark = i+frameCount;
     line(compass_x+(ACR/2 * sin(mark)),compass_y+(ACR/2 * cos(mark)),compass_x+(((ACR/2)-5) * sin(mark)), compass_y+((ACR/2)-5) * cos(mark));
     textSize(8);
     fill(125,199,52);
     strokeWeight(0.1);
-    text(i,compass_x+(((ACR/2)-15) * sin(mark)), compass_y+((ACR/2)-15) * cos(mark));
+    if(i>=180){
+    text(i,compass_x+(((ACR/2)-30) * sin(mark)), compass_y+((ACR/2)-30) * cos(mark));
+    }
+    if(i<180){
+      text(i,compass_x+(((ACR/2)-30) * sin(mark)), compass_y+((ACR/2)-30) * cos(mark));
+      }
+  }
+  for(let i = 0; i<=360;i+=1 )
+  {
+    strokeWeight(0.5);
+    let mark = i+frameCount;
+    line(compass_x+(ACR/2 * sin(mark)),compass_y+(ACR/2 * cos(mark)),compass_x+(((ACR/2)-5) * sin(mark)), compass_y+((ACR/2)-5) * cos(mark));
   }
 }
 
