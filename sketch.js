@@ -3,6 +3,8 @@ let capture;
 let startTime=0, currentTime, flagTime = 0, start_button, reset_button, ACR = 190, SCR = 180, horizon_x, horizon_y, currentSpeed=1, maxSpeed=7, speedometer_x, speedometer_y;
 let signalStrength = 90, compass_x, compass_y, battery = 98;
 let img;
+var zmq = require("zeromq");
+sock = zmq.socket("sub");
 //ACR is the radius of the artificial horizon
 //SCR is the radius of the speedometer
 function setup() {
@@ -177,29 +179,29 @@ function signal()
   noStroke();
   signalStrength=90;
   text("Signal: "+signalStrength+"%", windowWidth-170, windowHeight-13);
-  if(signalStrength>75)
-  {
-    img=loadImage('Pictures/Signal/WiFi_4.png');
-  }
-  else if(signalStrength<=75 && signalStrength>50)
-  {
-    img=loadImage('Pictures/Signal/WiFi_3.png');
-  }
-  else if(signalStrength<=50 && signalStrength>25)
-  {
-    img=loadImage('Pictures/Signal/WiFi_2.png');
-  }
-  else if(signalStrength<=25 && signalStrength>0)
-  {
-    img=loadImage('Pictures/Signal/WiFi_1.png');
-  }
-  else
-  {
-    img=loadImage('Pictures/Signal/WiFi_0.png');
-  }
-  image(img,0,0,100,100);
-  let img1=loadImage('ABC.png');
-  image(img1,0,0,1000,1000);
+  // if(signalStrength>75)
+  // {
+  //   img=loadImage('Pictures/Signal/WiFi_4.png');
+  // }
+  // else if(signalStrength<=75 && signalStrength>50)
+  // {
+  //   img=loadImage('Pictures/Signal/WiFi_3.png');
+  // }
+  // else if(signalStrength<=50 && signalStrength>25)
+  // {
+  //   img=loadImage('Pictures/Signal/WiFi_2.png');
+  // }
+  // else if(signalStrength<=25 && signalStrength>0)
+  // {
+  //   img=loadImage('Pictures/Signal/WiFi_1.png');
+  // }
+  // else
+  // {
+  //   img=loadImage('Pictures/Signal/WiFi_0.png');
+  // }
+  // image(img,0,0,100,100);
+  // let img1=loadImage('ABC.png');
+  // image(img1,0,0,1000,1000);
 }
 //battery done
 //throttle done
