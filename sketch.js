@@ -2,6 +2,7 @@ let capture;
 
 let startTime=0, currentTime, flagTime = 0, start_button, reset_button, ACR = 190, SCR = 180, horizon_x, horizon_y, currentSpeed=1, maxSpeed=7, speedometer_x, speedometer_y;
 let signalStrength = 90, compass_x, compass_y, battery = 98;
+let img;
 //ACR is the radius of the artificial horizon
 //SCR is the radius of the speedometer
 function setup() {
@@ -38,7 +39,7 @@ function draw() {
   fill(50,50,50,256);
   noStroke();
   quad(windowWidth,windowHeight,windowWidth,windowHeight-30,0,windowHeight-30, 0, windowHeight);
-  image(capture, 0, 0, 1056, 561);
+  image(capture, 0, 0, windowWidth, windowHeight);
   textSize(30);
   fill(125,199,52,255);
   textSize(20);
@@ -63,16 +64,14 @@ function draw() {
   artificialHorizon();
   //arc(windowWidth-85,400,150,150,0,PI,CHORD);
   
-
-  console.log("Artificial Horizon layout deployed generated");
   speed();
   textSize(11);
   noStroke();
   fill(125,199,52);
-  text("Signal: "+signalStrength+"%", windowWidth-170, windowHeight-13);
   text("battery: "+battery+"%", windowWidth-250, windowHeight-13);
   compass();
   throttle();
+  signal();
 }
 
 function throttle()
@@ -172,6 +171,35 @@ function speed()
   let needle = map(currentSpeed,0,maxSpeed,300,60);
   strokeWeight(2);
   line(speedometer_x, speedometer_y,speedometer_x + ((SCR/2-5) * sin(needle)),speedometer_y + ((SCR/2-5) * cos(needle)));
+}
+function signal()
+{
+  noStroke();
+  signalStrength=90;
+  text("Signal: "+signalStrength+"%", windowWidth-170, windowHeight-13);
+  if(signalStrength>75)
+  {
+    img=loadImage('Pictures/Signal/WiFi_4.png');
+  }
+  else if(signalStrength<=75 && signalStrength>50)
+  {
+    img=loadImage('Pictures/Signal/WiFi_3.png');
+  }
+  else if(signalStrength<=50 && signalStrength>25)
+  {
+    img=loadImage('Pictures/Signal/WiFi_2.png');
+  }
+  else if(signalStrength<=25 && signalStrength>0)
+  {
+    img=loadImage('Pictures/Signal/WiFi_1.png');
+  }
+  else
+  {
+    img=loadImage('Pictures/Signal/WiFi_0.png');
+  }
+  image(img,0,0,100,100);
+  let img1=loadImage('ABC.png');
+  image(img1,0,0,1000,1000);
 }
 //battery done
 //throttle done
