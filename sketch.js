@@ -72,6 +72,7 @@ function draw() {
   compass();
   throttle();
   signal();
+  getDataFromNode();
 }
 
 function throttle()
@@ -200,6 +201,21 @@ function signal()
   image(img,0,0,100,100);
   let img1=loadImage('ABC.png');
   image(img1,0,0,1000,1000);
+}
+
+function getDataFromNode() {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', '/get-data', true); // Use GET for retrieving data
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      const receivedData = JSON.parse(xhr.responseText);
+      console.log('Received data from Node.js:', receivedData);
+      // Handle the received data from the server here
+    } else {
+      console.error('Error fetching data:', xhr.statusText);
+    }
+  };
+  xhr.send();
 }
 //battery done
 //throttle done

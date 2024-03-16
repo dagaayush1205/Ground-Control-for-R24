@@ -1,7 +1,14 @@
 // subber.js
 var zmq = require("zeromq"),
   sock = zmq.socket("sub");
+  const express = require('express');
 
+  const app = express();
+
+  app.get('/get-data', (req, res) => {
+    const dataToSend = { message: 'This data is from Node.js!' };
+    res.json(dataToSend);
+  });
 sock.connect("tcp://127.0.0.1:3000");
 sock.subscribe("kitty cats");
 console.log("Subscriber connected to port 3000");
