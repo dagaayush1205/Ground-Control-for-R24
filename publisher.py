@@ -1,7 +1,25 @@
 import zmq
-from random import randrange
+import time
 
-context = zmq.context()
+# Create a ZeroMQ context
+context = zmq.Context()
+
+# Create a PUB socket
 socket = context.socket(zmq.PUB)
-socket.bind(tcp://*3000)
-zmq_setsockopt()
+
+# Bind the socket to an endpoint (e.g., a TCP port)
+socket.bind("tcp://127.0.0.1:3000")  # You can change the port if needed
+
+while True:
+    # Prepare the message to send
+    message = "Hello"  # Example message
+
+    # Optionally, specify a topic for the message (if using topics)
+    socket.send_multipart([b"kitty cats", b"Hello"])
+
+    # Send the message
+    #socket.send_string(message)
+
+    # Simulate some work or delay between messages
+    time.sleep(0.5)
+    print("Message Sent")
