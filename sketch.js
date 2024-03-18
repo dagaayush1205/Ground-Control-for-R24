@@ -28,8 +28,8 @@ function setup() {
    angleMode(DEGREES);
    console.log("Angle mode is set to from radians to degrees");
    
-   frameRate(60);
-   console.log("frame rate set to 500");
+   frameRate(15);
+   console.log("frame rate set to 15");
 }
 
 function draw() {
@@ -209,13 +209,16 @@ function getDataFromNode() {
   xhr.onload = function() {
     if (xhr.status === 200) {
       const receivedData = JSON.parse(xhr.responseText);
-      console.log('Received data from Node.js:', receivedData);
+      console.log('Received data from Node.js:', receivedData.toString());
       // Handle the received data from the server here
     } else {
-      console.error('Error fetching data:', xhr.statusText);
+      console.error('Error fetching data:', xhr.statusText, receivedData);
     }
   };
   xhr.send();
+  setTimeout(() => {
+    console.log("Delayed for 1 second.");
+  }, "1000");
 }
 //battery done
 //throttle done
