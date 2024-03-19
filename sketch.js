@@ -204,21 +204,14 @@ function signal()
 }
 
 function getDataFromNode() {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', '/get-data', true); // Use GET for retrieving data
-  xhr.onload = function() {
-    if (xhr.status === 200) {
-      const receivedData = JSON.parse(xhr.responseText);
-      console.log('Received data from Node.js:', receivedData.toString());
-      // Handle the received data from the server here
-    } else {
-      console.error('Error fetching data:', xhr.statusText, receivedData);
-    }
-  };
-  xhr.send();
-  setTimeout(() => {
-    console.log("Delayed for 1 second.");
-  }, "1000");
+  fetch('http://127.0.0.1:4000/api/products')
+    .then(response => response.json()) // Parse JSON response
+    .then(data => {
+      //console.log(response);  
+      // Access the data object (data.products)
+        console.log(data);
+    })
+    .catch(error => console.error(error)); 
 }
 //battery done
 //throttle done
