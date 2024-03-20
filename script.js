@@ -4,7 +4,7 @@
   const express = require('express');
 
   const http = require('http');
-
+  var msg ="";
   const app = express();
 sock.connect("tcp://127.0.0.1:3000");
 sock.subscribe("kitty cats");
@@ -24,6 +24,7 @@ sock.on("message", function(topic, message) {
     "containing message:",
     message.toString()
   );
+  msg = message.toString();
 });
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500"); // update to match the domain you will make the request from
@@ -34,7 +35,7 @@ const data = "7";
 app.get('/api/products', (req, res) => {
   console.log("Got /api/products")
   
-    res.json(data); // Send data as JSON
+    res.json(msg); // Send data as JSON
 });
 app.listen(4000, () => {
   console.log("Running on port 4000");
