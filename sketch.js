@@ -30,8 +30,8 @@ function setup() {
    angleMode(DEGREES);
    console.log("Angle mode is set to from radians to degrees");
    
-   frameRate(60);
-   console.log("frame rate set to 500");
+   frameRate(15);
+   console.log("frame rate set to 15");
 }
 
 function draw() {
@@ -74,6 +74,7 @@ function draw() {
   compass();
   throttle();
   signal();
+  getDataFromNode();
 }
 
 function throttle()
@@ -202,6 +203,17 @@ function signal()
   // image(img,0,0,100,100);
   // let img1=loadImage('ABC.png');
   // image(img1,0,0,1000,1000);
+}
+
+function getDataFromNode() {
+  fetch('http://127.0.0.1:4000/api/products')
+    .then(response => response.json()) // Parse JSON response
+    .then(data => {
+      //console.log(response);  
+      // Access the data object (data.products)
+        console.log(data);
+    })
+    .catch(error => console.error(error)); 
 }
 //battery done
 //throttle done
