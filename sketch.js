@@ -32,7 +32,20 @@ function setup() {
    
    frameRate(15);
    console.log("frame rate set to 15");
+} 
+
+function getDataFromNode() {
+  fetch('http://127.0.0.1:4000/api/products')
+    .then(response => response.json()) // Parse JSON response
+    .then(data => {
+      //console.log(response);  
+      // Access the data object (data.products)
+        console.log(data);
+        currentSpeed = data;
+    })
+    .catch(error => console.error(error)); 
 }
+
 
 function draw() {
   horizon_x = windowWidth-1150, horizon_y=windowHeight-130;
@@ -160,7 +173,6 @@ function speed()
   stroke(125,199,52); 
   strokeWeight(0.7);
   circle(speedometer_x, speedometer_y, SCR, SCR);
-  currentSpeed=0;
   fill(125,199,52,255);
   for(let i=0;i<=maxSpeed;i++)
   {
@@ -205,16 +217,6 @@ function signal()
   // image(img1,0,0,1000,1000);
 }
 
-function getDataFromNode() {
-  fetch('http://127.0.0.1:4000/api/products')
-    .then(response => response.json()) // Parse JSON response
-    .then(data => {
-      //console.log(response);  
-      // Access the data object (data.products)
-        console.log(data);
-    })
-    .catch(error => console.error(error)); 
-}
 //battery done
 //throttle done
 //speedometer done

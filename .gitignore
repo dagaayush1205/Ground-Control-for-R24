@@ -1,2 +1,14 @@
 node_modules/
 venv/
+aqmz/
+azmqConfig.cmake
+AzmqCPack.cmake
+AzmqCPackOptions.cmake.in
+build/
+cmake/
+CMakeLists.txt
+CONTRIBUTING.md
+doc/
+FindAzmqLibzmq.cmake
+myapp/
+zhelpers.hpp
