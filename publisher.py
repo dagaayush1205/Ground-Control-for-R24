@@ -17,8 +17,8 @@ while True:
     speed = random.randint(0,7)
     signal = random.randint(0,100)
     throttle = random.randint(0,100)
-    pitch = random.randint(0,360)
-    roll = random.randint(0,360)
+    pitch = random.randint(-90,90)
+    roll = random.randint(-90,90)
 
     # Optionally, specify a topic for the message (if using topics)
     socket.send_multipart([b"battery", str(battery).encode('utf-8')])

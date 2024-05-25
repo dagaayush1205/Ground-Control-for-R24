@@ -42,7 +42,7 @@ function getDataFromNode() {
       // Access the data object (data.products)
         console.log(data);
         battery = data[0];
-        //compass = data[1];
+        //compassACR*sin(pitch)+2*ACR*pitch/180+horizon_x, ACR*sin(pitch)+ACR*pitch/90+horizon_y, horizon_x-ACR*(sin(pitch)+pitch/90), horizon_y-ACR*(sin(pitch)+pitch/90)); = data[1];
         currentSpeed = data[2];
         signalStrength =  data[3];
         //throttle = 
@@ -157,13 +157,9 @@ function artificialHorizon()
   stroke(125,199,52);
   circle(horizon_x,horizon_y,ACR);
   strokeWeight(0.5);
-  //line(horizon_x+ACR/2,horizon_y,horizon_x-ACR/2,horizon_y)
-  stroke(255,0,0);
-  stroke(125,199,52);
-  fill(255,0,0,50);
-  //arc(horizon_x,horizon_y,ACR,ACR,0+pitch,180-pitch,CHORD);
+  fill(0,255,255,100);
+  circle(horizon_x-(ACR*pitch/90)+sqrt(ACR*ACR-ACR*pitch/90)*sin(pitch),horizon_y-sqrt(ACR*ACR-ACR*pitch/90)*cos(pitch),10);
   fill(15,0,75,150);
-  //arc(horizon_x,horizon_y,ACR,ACR,180+pitch,0+pitch,CHORD);
   for(let i=15;i<=170;i+=15)
   {
     stroke(255,0,0);
