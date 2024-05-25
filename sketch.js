@@ -1,7 +1,7 @@
 let capture;
 
 let startTime=0, currentTime, flagTime = 0, start_button, reset_button, ACR = 190, SCR = 180, horizon_x, horizon_y, currentSpeed=1, maxSpeed=7, speedometer_x, speedometer_y;
-let signalStrength = 90, compass_x, compass_y, battery = 98;
+let signalStrength = 90, compass_x, compass_y, battery = 98, pitch, roll;
 let img;
 var zmq = require("zeromq");
 sock = zmq.socket("sub");
@@ -41,8 +41,13 @@ function getDataFromNode() {
       //console.log(response);  
       // Access the data object (data.products)
         console.log(data);
-        currentSpeed = data[0];
-        battery = data[1]; 
+        battery = data[0];
+        //compass = data[1];
+        currentSpeed = data[2];
+        signalStrength =  data[3];
+        //throttle = 
+        pitch = data[5];
+        roll = data[6];
     })
     .catch(error => console.error(error)); 
 }
@@ -156,10 +161,9 @@ function artificialHorizon()
   stroke(255,0,0);
   stroke(125,199,52);
   fill(255,0,0,50);
-  let pitch = frameCount, roll = frameCount;
-  arc(horizon_x,horizon_y,ACR,ACR,0+pitch,180-pitch,CHORD);
+  //arc(horizon_x,horizon_y,ACR,ACR,0+pitch,180-pitch,CHORD);
   fill(15,0,75,150);
-  arc(horizon_x,horizon_y,ACR,ACR,180+pitch,0+pitch,CHORD);
+  //arc(horizon_x,horizon_y,ACR,ACR,180+pitch,0+pitch,CHORD);
   for(let i=15;i<=170;i+=15)
   {
     stroke(255,0,0);
@@ -191,7 +195,6 @@ function speed()
 function signal()
 {
   noStroke();
-  signalStrength=90;
   text("Signal: "+signalStrength+"%", windowWidth-170, windowHeight-13);
   // if(signalStrength>75)
   // {

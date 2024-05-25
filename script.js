@@ -15,6 +15,14 @@ sock.subscribe("compass");
 console.log("connected to compass");
 sock.subscribe("speed");
 console.log("connected to speed");
+sock.subscribe("signal")
+console.log("connected to signal");
+sock.subscribe("throttle");
+console.log("connected to throttle");
+sock.subscribe("pitch");
+console.log("connected to pitch")
+sock.subscribe("roll");
+console.log("connected to roll");
 sock.on("message", function(topic, message) {
   
 	if(topic.toString() === "speed")
@@ -35,7 +43,27 @@ sock.on("message", function(topic, message) {
 		console.log("sending compass data");
 	}
 
-	if
+	if(topic.toString() === "signal")
+        {
+                signal = message.toString();
+                console.log("sending signal data");
+        }
+	if(topic.toString() === "throttle")
+        {
+                throttle = message.toString();
+                console.log("sending throttle data");
+        }
+	if(topic.toString() === "pitch")
+        {
+                pitch = message.toString();
+                console.log("sending pitch data");
+        }
+	if(topic.toString() === "roll")
+        {
+                roll = message.toString();
+                console.log("sending roll data");
+        }
+
 	console.log("received a message related to:",topic.toString());
     	console.log("Sending Message to sketch");
     	setTimeout(() => {
@@ -53,7 +81,7 @@ app.use(function(req, res, next) {
 app.get('/api/products', (req, res) => {
   console.log("Got /api/products")
   
-    res.json([speed,battery,3]); // Send data as JSON
+    res.json([battery,compass,speed,signal,throttle,pitch,roll]); // Send data as JSON
 });
 app.listen(4000, () => {
   console.log("Running on port 4000");

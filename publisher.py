@@ -25,12 +25,16 @@ while True:
     socket.send_multipart([b"compass", str(compass).encode('utf-8')])
     socket.send_multipart([b"speed", str(speed).encode('utf-8')])
     socket.send_multipart([b"signal", str(signal).encode('utf-8')])
-    socket.send_multipart([b"throttle", str(signal).encode('utf-8')])
+    socket.send_multipart([b"throttle", str(throttle).encode('utf-8')])
     socket.send_multipart([b"pitch", str(pitch).encode('utf-8')])
-    # you are over here, working on the above which is still incomplete
-    print(battery)
-    print(compass)
-    print(speed)
+    socket.send_multipart([b"roll", str(roll).encode('utf-8')])
+    print("battery: ", battery)
+    print("compass: ", compass)
+    print("speed: ", speed)
+    print("signal: ", signal)
+    print("throttle: ", throttle)
+    print("pitch: ", pitch)
+    print("roll: ", roll)
     # Send the message
     #socket.send_string(message)
 
