@@ -41,7 +41,8 @@ function getDataFromNode() {
       //console.log(response);  
       // Access the data object (data.products)
         console.log(data);
-        currentSpeed = data;
+        currentSpeed = data[0];
+        battery = data[1]; 
     })
     .catch(error => console.error(error)); 
 }

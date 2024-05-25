@@ -20,19 +20,30 @@ sock.on("message", function(topic, message) {
 	if(topic.toString() === "speed")
 	{
 		speed = message.toString();
-	console.log("I AM IN SPEED");
+	console.log("sending speed data");
 	}
+	
+	if(topic.toString() === "battery")
+	{
+		battery = message.toString();
+		console.log("sending battery data");
+	}
+	
+	if(topic.toString() === "compass")
+	{
+		compass = message.toString();
+		console.log("sending compass data");
+	}
+
+	if
 	console.log("received a message related to:",topic.toString());
-    console.log("Sending Message to sketch");
-    setTimeout(() => {
-      console.log("Delayed for 1 second.");
-    }, "1000");
+    	console.log("Sending Message to sketch");
+    	setTimeout(() => {
+      	console.log("Delayed for 1 second.");
+    	}, "1000");
     
-    console.log(
-    "containing message:",
-    message.toString()
-  );
-  msg = message.toString();
+    	console.log("containing message:", message.toString());
+ 	 msg = message.toString();
 });
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500"); // update to match the domain you will make the request from
@@ -42,7 +53,7 @@ app.use(function(req, res, next) {
 app.get('/api/products', (req, res) => {
   console.log("Got /api/products")
   
-    res.json(speed); // Send data as JSON
+    res.json([speed,battery,3]); // Send data as JSON
 });
 app.listen(4000, () => {
   console.log("Running on port 4000");
