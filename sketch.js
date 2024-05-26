@@ -1,7 +1,7 @@
 let capture;
 
 let startTime=0, currentTime, flagTime = 0, start_button, reset_button, ACR = 190, SCR = 180, horizon_x, horizon_y, currentSpeed=1, maxSpeed=7, speedometer_x, speedometer_y;
-let signalStrength = 90, compass_x, compass_y, battery = 98, pitch, roll;
+let signalStrength = 90, compass_x, compass_y, battery = 98, pitch, roll,power;
 let img;
 var zmq = require("zeromq");
 sock = zmq.socket("sub");
@@ -45,7 +45,7 @@ function getDataFromNode() {
         //compassACR*sin(pitch)+2*ACR*pitch/180+horizon_x, ACR*sin(pitch)+ACR*pitch/90+horizon_y, horizon_x-ACR*(sin(pitch)+pitch/90), horizon_y-ACR*(sin(pitch)+pitch/90)); = data[1];
         currentSpeed = data[2];
         signalStrength =  data[3];
-        //throttle = 
+        power = data[4];
         pitch = data[5];
         roll = data[6];
     })
@@ -100,11 +100,11 @@ function throttle()
 {
 let t = frameCount;
   let x = 1200;
-  let y = 100 * sin(t) +300;//  let y = 100 * map(x,0,max,-1,+1) +300;
+  let y = power + 300;//  let y = 100 * map(x,0,max,-1,+1) +300;
   strokeWeight(3);
   line(1200, 200, 1200, 400);
   strokeWeight(2);
-  circle(x, y, 10);
+  circle(x, power , 10);
 
 }
 function compass()

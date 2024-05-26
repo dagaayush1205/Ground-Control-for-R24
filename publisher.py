@@ -16,10 +16,10 @@ while True:
     compass = random.randint(0,360)
     speed = random.randint(0,7)
     signal = random.randint(0,100)
-    throttle = random.randint(0,100)
+    throttle = random.randint(-100,100)
     pitch = random.randint(-90,90)
     roll = random.randint(-90,90)
-
+    throttle = throttle + 300
     # Optionally, specify a topic for the message (if using topics)
     socket.send_multipart([b"battery", str(battery).encode('utf-8')])
     socket.send_multipart([b"compass", str(compass).encode('utf-8')])
