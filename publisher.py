@@ -14,7 +14,7 @@ while True:
     # Prepare the message to send
     battery = random.randint(0,100)  # Example message
     compass = random.randint(0,360)
-    speed = random.randint(0,7)
+    speed = (random.randint(0,70)/10)
     signal = random.randint(0,100)
     throttle = random.randint(-100,100)
     pitch = random.randint(-90,90)
