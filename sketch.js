@@ -1,7 +1,7 @@
 let capture;
 
 let startTime=0, currentTime, flagTime = 0, start_button, reset_button, ACR = 190, SCR = 180, horizon_x, horizon_y, currentSpeed=1, maxSpeed=7, speedometer_x, speedometer_y;
-let signalStrength = 90, compass_x, compass_y, battery = 98, pitch, roll,power;
+let signalStrength = 90, compass_x, compass_y, battery = 98, pitch, roll,power,compass_A;
 let img;
 var zmq = require("zeromq");
 sock = zmq.socket("sub");
@@ -42,7 +42,7 @@ function getDataFromNode() {
       // Access the data object (data.products)
         console.log(data);
         battery = data[0];
-        //compassACR*sin(pitch)+2*ACR*pitch/180+horizon_x, ACR*sin(pitch)+ACR*pitch/90+horizon_y, horizon_x-ACR*(sin(pitch)+pitch/90), horizon_y-ACR*(sin(pitch)+pitch/90)); = data[1];
+        compass_A = data[1];
         currentSpeed = data[2];
         signalStrength =  data[3];
         power = data[4];
@@ -111,33 +111,11 @@ function compass()
 { compass_x = windowWidth-900, compass_y=windowHeight-130;
   fill(0,0,0,0);
   stroke(125,199,52);
-  mark = frameCount;
-  let circleX = cos(mark) * ACR/2;
-  let circleY = sin(mark) * ACR/2;
+  let circleX = cos(compass_A) * ((power-200)/200)*ACR/2;
+  let circleY = sin(compass_A) * ((power-200)/200)*ACR/2;
   circle(compass_x, compass_y, ACR);
   line(compass_x, compass_y, compass_x +circleX, compass_y + circleY);
-  // circle(compass_x,compass_y,ACR);
-  // for(let i=0;i<360 ;i+=30)
-  // {
-  //   strokeWeight(3);
-  //   let mark = i+frameCount;
-  //   line(compass_x+(ACR/2 * sin(mark)),compass_y+(ACR/2 * cos(mark)),compass_x+(((ACR/2)-5) * sin(mark)), compass_y+((ACR/2)-5) * cos(mark));
-  //   textSize(8);
-  //   fill(125,199,52);
-  //   strokeWeight(0.1);
-  //   if(i>=180){
-  //   text(i,compass_x+(((ACR/2)-30) * sin(mark)), compass_y+((ACR/2)-30) * cos(mark));
-  //   }
-  //   if(i<180){
-  //     text(i,compass_x+(((ACR/2)-30) * sin(mark)), compass_y+((ACR/2)-30) * cos(mark));
-  //     }
-  //}
-  // for(let i = 0; i<=360;i+=1 )
-  // {
-  //   strokeWeight(0.5);
-  //   let mark = i+frameCount;
-  //   line(compass_x+(ACR/2 * sin(mark)),compass_y+(ACR/2 * cos(mark)),compass_x+(((ACR/2)-5) * sin(mark)), compass_y+((ACR/2)-5) * cos(mark));
-  // }
+
 }
 
 function startButton()
