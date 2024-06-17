@@ -91,7 +91,7 @@ function draw() {
   fill(125,199,52);
   text("battery: "+battery+"%", windowWidth-250, windowHeight-13);
   compass();
-  throttle();
+  //throttle();
   signal();
   getDataFromNode();
 }
@@ -138,10 +138,16 @@ function artificialHorizon()
 {
   fill(0,0,0,0);
   stroke(125,199,52);
+  let X = cos(roll) *ACR;
+  let Y = sin(pitch) *ACR;
   circle(horizon_x,horizon_y,ACR);
-  strokeWeight(0.5);
-  fill(0,255,255,100);
-  circle(horizon_x-(ACR*pitch/90)+sqrt(ACR*ACR-ACR*pitch/90)*sin(pitch),horizon_y-sqrt(ACR*ACR-ACR*pitch/90)*cos(pitch),10);
+  strokeWeight(1);
+  fill(0,255,255,255);
+  line(horizon_x+sqrt((ACR*ACR)-sq(Y-horizon_y)),horizon_y+sqrt((ACR*ACR)-sq(X-horizon_x)),horizon_x-sqrt((ACR*ACR)-sq(Y-horizon_y)),horizon_y-sqrt((ACR*ACR)-sq(X-horizon_x)));
+  console.log(horizon_x+sqrt((ACR*ACR)-sq(Y-horizon_y)));
+  console.log(horizon_y+sqrt((ACR*ACR)-sq(X-horizon_x)));
+  console.log(horizon_x-sqrt((ACR*ACR)-sq(Y-horizon_y)));
+  console.log(horizon_y-sqrt((ACR*ACR)-sq(X-horizon_x)));
   fill(15,0,75,150);
   for(let i=15;i<=170;i+=15)
   {

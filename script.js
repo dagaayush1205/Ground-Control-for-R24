@@ -7,7 +7,7 @@
   var msg ="";
 var speed="";
   const app = express();
-sock.connect("tcp://127.0.0.1:3000");
+sock.connect("tcp://192.168.1.52:3000");
 console.log("Subscriber connected to port 3000");
 sock.subscribe("battery");
 console.log("connected to battery");
