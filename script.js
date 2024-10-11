@@ -7,7 +7,7 @@
   var msg ="";
 var speed="";
   const app = express();
-sock.connect("tcp://192.168.1.52:3000");
+sock.connect("tcp://192.168.89.23:3000");
 console.log("Subscriber connected to port 3000");
 sock.subscribe("battery");
 console.log("connected to battery");
@@ -80,22 +80,21 @@ app.use(function(req, res, next) {
 });
 app.get('/api/products', (req, res) => {
   console.log("Got /api/products")
-  
-    res.json([battery,compass,speed,signal,throttle,pitch,roll]); // Send data as JSON
+        res.json([battery,compass,speed,signal,throttle,pitch,roll]); // Send data as JSON
 });
 app.listen(4000, () => {
   console.log("Running on port 4000");
 })
 
-// var xhttp = new XMLHttpRequest();
-// xhttp.onreadystatechange = function() {
-//     if (this.readyState == 4 && this.status == 200) {
-//        // Typical action to be performed when the document is ready:
-//        document.getElementById("demo").innerHTML = xhttp.responseText;
-//     }
-// };
-// xhttp.open("GET", "script.js", true);
-// xhttp.send();
+                                        // var xhttp = new XMLHttpRequest();
+                                        // xhttp.onreadystatechange = function() {
+                                        //     if (this.readyState == 4 && this.status == 200) {
+                                        //        // Typical action to be performed when the document is ready:
+                                        //        document.getElementById("demo").innerHTML = xhttp.responseText;
+                                        //     }
+                                        // };
+                                        // xhttp.open("GET", "script.js", true);
+                                        // xhttp.send();
 
 
 

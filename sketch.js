@@ -1,21 +1,21 @@
 let capture;
-
+      
 let startTime=0, currentTime, flagTime = 0, start_button, reset_button, ACR = 190, SCR = 180, horizon_x, horizon_y, currentSpeed=1, maxSpeed=7, speedometer_x, speedometer_y;
 let signalStrength = 90, compass_x, compass_y, battery = 98, pitch, roll,power,compass_A;
 let img;
-var zmq = require("zeromq");
-sock = zmq.socket("sub");
+  var zmq = require("zeromq");
+  sock = zmq.socket("sub");
 //ACR is the radius of the artificial horizon
 //SCR is the radius of the speedometer
 function setup() {
   console.log("Screen Size: "+windowWidth+", "+windowHeight);
-  createCanvas(windowWidth,windowHeight);
+        
   console.log("Canvas Created successfully");
 
   capture = createCapture(VIDEO);
-  capture.size(1680,1080);
+  capture.size(1680,1080);  
   console.log("Video Capture generated successfully");
-  capture.hide(); // hide original feed
+  capture.hide(); // hide original feed         
   console.log("Raw Video Hidden");
 
    //Button for start
@@ -34,23 +34,23 @@ function setup() {
    console.log("frame rate set to 15");
 } 
 
-function getDataFromNode() {
-  fetch('http://127.0.0.1:4000/api/products')
-    .then(response => response.json()) // Parse JSON response
-    .then(data => {
-      //console.log(response);  
-      // Access the data object (data.products)
-        console.log(data);
-        battery = data[0];
-        compass_A = data[1];
-        currentSpeed = data[2];
-        signalStrength =  data[3];
-        power = data[4];
-        pitch = data[5];
-        roll = data[6];
-    })
-    .catch(error => console.error(error)); 
-}
+        function getDataFromNode() {
+          fetch('http://127.0.0.1:4000/api/products')
+            .then(response => response.json()) // Parse JSON response
+            .then(data => {
+              //console.log(response);  
+              // Access the data object (data.products)
+                console.log(data);
+                battery = data[0];
+                compass_A = data[1];
+                currentSpeed = data[2];
+                signalStrength =  data[3];
+                power = data[4];
+                pitch = data[5];
+                roll = data[6];           
+            })
+            .catch(error => console.error(error)); 
+        }
 
 
 function draw() {
@@ -93,7 +93,7 @@ function draw() {
   compass();
   //throttle();
   signal();
-  getDataFromNode();
+      ();
 }
 
 function throttle()
@@ -197,7 +197,7 @@ function signal()
   // {
   //   img=loadImage('Pictures/Signal/WiFi_1.png');
   // }
-  // else
+// else 
   // {
   //   img=loadImage('Pictures/Signal/WiFi_0.png');
   // }

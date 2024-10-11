@@ -1,15 +1,12 @@
 argcomplete==2.0.0
-asahi-firmware==0.1
 asn1==2.7.0
 beautifulsoup4==4.12.3
 blivet==3.8.2
-Brlapi==0.8.5
 cffi==1.15.1
 charset-normalizer==3.2.0
 click==8.1.3
 cmake==3.28.1
 colorama==0.4.6
-cupshelpers==1.0
 dasbus==1.7
 dbus-python==1.3.2
 distro==1.8.0
@@ -63,10 +60,7 @@ requests-ftp==0.3.1
 rpm==4.19.1.1
 ruamel.yaml==0.18.5
 ruamel.yaml.clib==0.2.8
-selinux @ file:///builddir/build/BUILD/libselinux-3.5/src
-sepolicy @ file:///builddir/build/BUILD/selinux-3.5/python/sepolicy
 setools==4.4.3
-setroubleshoot @ file:///builddir/build/BUILD/setroubleshoot-3.3.33/src
 setuptools==67.7.2
 shtab==1.6.1
 simpleaudio==1.0.4
