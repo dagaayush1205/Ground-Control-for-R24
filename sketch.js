@@ -1,215 +1,125 @@
-let capture;
-
-let startTime=0, currentTime, flagTime = 0, start_button, reset_button, ACR = 190, SCR = 180, horizon_x, horizon_y, currentSpeed=1, maxSpeed=7, speedometer_x, speedometer_y;
-let signalStrength = 90, compass_x, compass_y, battery = 98, pitch, roll,power,compass_A;
-let img;
+let video;
+let battery=0, compass=0, currentSpeed=0, signalStrength=0, power=0, pitch=0, roll=0;
 var zmq = require("zeromq");
-sock = zmq.socket("sub");
-//ACR is the radius of the artificial horizon
-//SCR is the radius of the speedometer
+sock = zmq.socket("sub");   
+
 function setup() {
-  console.log("Screen Size: "+windowWidth+", "+windowHeight);
-  createCanvas(windowWidth,windowHeight);
-  console.log("Canvas Created successfully");
+  createCanvas(windowWidth, windowHeight); 
 
-  capture = createCapture(VIDEO);
-  capture.size(1680,1080);
-  console.log("Video Capture generated successfully");
-  capture.hide(); // hide original feed
-  console.log("Raw Video Hidden");
-
-   //Button for start
-   start_button = createButton('Start');
-   //Button for stop and reset
-   start_button.position(windowWidth-160, 55)
-   reset_button = createButton('Stop/Reset');
-   reset_button.position(windowWidth-110, 55);
-   console.log("Button generated");
-
-   //angleMode
-   angleMode(DEGREES);
-   console.log("Angle mode is set to from radians to degrees");
-   
-   frameRate(15);
-   console.log("frame rate set to 15");
-} 
+  // Create video capture and hide default DOM element
+  video = createCapture(VIDEO);
+  video.size(350, 200);  // Size of the video feed
+  video.hide();          // Hide original video feed
+  
+  textFont('monospace');
+  textSize(20);
+  
+  // Start fetching data from the Node.js server
+  setInterval(getDataFromNode, 1000 ); // Fetch data every second
+}
 
 function getDataFromNode() {
   fetch('http://127.0.0.1:4000/api/products')
     .then(response => response.json()) // Parse JSON response
     .then(data => {
-      //console.log(response);  
-      // Access the data object (data.products)
-        console.log(data);
-        battery = data[0];
-        compass_A = data[1];
-        currentSpeed = data[2];
-        signalStrength =  data[3];
-        power = data[4];
-        pitch = data[5];
-        roll = data[6];
+      battery = data[0];
+      compass = data[1];
+      currentSpeed = data[2];
+      signalStrength = data[3];
+      power = data[4];
+      pitch = data[5];
+      roll = data[6];
+      console.log("Data received:", data[0]     );
     })
-    .catch(error => console.error(error)); 
+    .catch(error => console.error(error));  
 }
-
 
 function draw() {
-  horizon_x = windowWidth-1150, horizon_y=windowHeight-130;
-  speedometer_x = windowWidth-650, speedometer_y= windowHeight-130;
-  background(0);
-  fill(50,50,50,256);
-  noStroke();
-  quad(windowWidth,windowHeight,windowWidth,windowHeight-30,0,windowHeight-30, 0, windowHeight);
-  image(capture, 0, 0, windowWidth, windowHeight);
-  textSize(30);
-  fill(125,199,52,255);
-  textSize(20);
-  text(hour().toString().padStart(2,'0') +":"+minute().toString().padStart(2,'0')+":"+second().toString().padStart(2,'0'), windowWidth-100, windowHeight-10); 
-  textSize(30);
-  
-  //StopWatch
-  start_button.mousePressed(startButton);
-  reset_button.mousePressed(resetButton);
-  if(flagTime == 0)
-  {
-  updateTime();
-  text(floor(currentTime/60000).toString().padStart(2,'0')+":"+(floor(currentTime/1000)%60).toString().padStart(2,'0')+":" + ((currentTime)%1000).toString().padStart(3,'0'), windowWidth-160, 40);
-}
-  
-  if(flagTime == 1)
-  {
-    text(floor(currentTime/60000).toString().padStart(2,'0')+":"+(floor(currentTime/1000)%60).toString().padStart(2,'0')+":" +((currentTime)%1000).toString().padStart(3,'0'), windowWidth-160, 40);
-  }
+  background(30);   
+  // MOTOR Info Box
+  fill(255);
+  text("MOTOR", 50, 50);
+  textSize(18);
+  fill('red');
+  text("State: N/A", 50, 100);
+  fill(255);  
+  text("Right: 0%", 50, 140);
+  text("Left: 0%", 50, 180);
+  fill('green');
+  text(`Batt: ${battery}`, 50, 220); // Display battery level
 
-  // Artificial Horizon
-  artificialHorizon();
-  //arc(windowWidth-85,400,150,150,0,PI,CHORD);
-  
-  speed();
-  textSize(11);
-  noStroke();
-  fill(125,199,52);
-  text("battery: "+battery+"%", windowWidth-250, windowHeight-13);
-  compass();
-  //throttle();
-  signal();
-  getDataFromNode();
-}
+  // GPS Info Box
+  fill(255);
+  text("GPS", 50, 450);
+  fill('green');
+  text("State: Fix", 50, 500);
+  fill(255);
+  text(`Spd: ${currentSpeed || 'N/A'} Km/h`, 50, 540); // Display current speed
+  text("Alt: 267.5 mslm", 50, 580);
+  fill('red');
+  text(`Lat: ${compass || 'N/A'}`, 50, 620); // Display compass
+  text(`Long: ${signalStrength || 'N/A'}`, 50, 660); // Display signal strength
 
-function throttle()
-{
-let t = frameCount;
-  let x = 1200;
-  let y = power + 300;//  let y = 100 * map(x,0,max,-1,+1) +300;
+  // Speed Control (right side of MOTOR info)
+  fill(255);
+  text("Speed", 400, 100);
+  rect(400, 120, 200, 20); // Speed bar background
+  fill(0, 255, 0);
+  rect(400, 120, map(currentSpeed || 0, 0, 70, 0, 200), 20); // Speed bar fill
+
+  fill(255);
+  text("Turning Speed", 400, 160);
+  rect(400, 180, 200, 20);
+  fill(0, 255, 0);
+  rect(400, 180, 160, 20);
+
+  text("Auto Speed", 400, 220);
+  rect(400, 240, 200, 20);
+
+  text("Auto Turning Speed", 400, 280);
+  rect(400, 300, 200, 20);
+
+  // Radar (Top-center)
+  fill(255);
+  text("Remote Mode", 700, 100);
+  noFill();
+  stroke(0, 255, 0);
   strokeWeight(3);
-  line(1200, 200, 1200, 400);
+  arc(750, 200, 150, 150, PI, TWO_PI); // Radar arc
+  arc(750, 200, 100, 100, PI, TWO_PI);
+  line(750, 200, 750, 125); // Center line
+  line(750, 200, 700, 145);
+  line(750, 200, 800, 145);
+  line(750, 200, 675, 200);
+  line(750, 200, 825, 200);
+
+  // Compass (Top-right)
+  fill(255);
+  textSize(40);
+  text(compass+"°", 1100, 100);
+  noFill();
+  stroke(255);
+  ellipse(1100, 193, 150, 150); // Compass circle
   strokeWeight(2);
-  circle(x, power , 10);
+  line(1100, 200, 1150, 150); // Compass needle
+  
+  fill('red');
+  textSize(25);
+  text("N", 1090, 140);
+  
+  fill(255);
+  textSize(20);
+  text("W", 1040, 200);
+  text("E", 1150, 200);
+  text("S", 1090, 260);
 
-}
-function compass()
-{ compass_x = windowWidth-900, compass_y=windowHeight-130;
-  fill(0,0,0,0);
-  stroke(125,199,52);
-  let circleX = cos(compass_A) * ((power-200)/200)*ACR/2;
-  let circleY = sin(compass_A) * ((power-200)/200)*ACR/2;
-  circle(compass_x, compass_y, ACR);
-  line(compass_x, compass_y, compass_x +circleX, compass_y + circleY);
+  // Track Route (GPS chart)
+  fill(255);
+  text("TRACK ROUTE", 400, 490);
+  noFill();
+  stroke(255);
+  rect(400, 500, 500, 200); // Empty track route chart placeholder
 
+  // Display the video feed (Bottom-right)
+  image(video, 1000, 500, 350, 200);  // Position the video feed on the canvas
 }
-
-function startButton()
-{
-  flagTime = 0;
-  console.log("Start button pressed"); 
-  startTime = millis();
-}
-function resetButton()
-{
-  flagTime = 1
-  console.log("reset button pressed");
-
-}
-function updateTime()
-{
-  currentTime=millis()-startTime;
-}
-function artificialHorizon()
-{
-  fill(0,0,0,0);
-  stroke(125,199,52);
-  let X = cos(roll) *ACR;
-  let Y = sin(pitch) *ACR;
-  circle(horizon_x,horizon_y,ACR);
-  strokeWeight(1);
-  fill(0,255,255,255);
-  line(horizon_x+sqrt((ACR*ACR)-sq(Y-horizon_y)),horizon_y+sqrt((ACR*ACR)-sq(X-horizon_x)),horizon_x-sqrt((ACR*ACR)-sq(Y-horizon_y)),horizon_y-sqrt((ACR*ACR)-sq(X-horizon_x)));
-  console.log(horizon_x+sqrt((ACR*ACR)-sq(Y-horizon_y)));
-  console.log(horizon_y+sqrt((ACR*ACR)-sq(X-horizon_x)));
-  console.log(horizon_x-sqrt((ACR*ACR)-sq(Y-horizon_y)));
-  console.log(horizon_y-sqrt((ACR*ACR)-sq(X-horizon_x)));
-  fill(15,0,75,150);
-  for(let i=15;i<=170;i+=15)
-  {
-    stroke(255,0,0);
-    strokeWeight(0.2);
-    line(horizon_x+ACR/2*cos(i),horizon_y+ACR/2*sin(i), horizon_x-ACR/2*cos(i),horizon_y-ACR/2*sin(i));
-  }
-}
-
-function speed()
-{
-  fill(0,0,0,0);
-  stroke(125,199,52); 
-  strokeWeight(0.7);
-  circle(speedometer_x, speedometer_y, SCR, SCR);
-  fill(125,199,52,255);
-  for(let i=0;i<=maxSpeed;i++)
-  {
-    strokeWeight(3);
-    let mark = map(i,0,maxSpeed,300,60);
-    line(speedometer_x+(SCR/2 * sin(mark)),speedometer_y+(SCR/2 * cos(mark)),speedometer_x+(((SCR/2)-5) * sin(mark)), speedometer_y+((SCR/2)-5) * cos(mark));
-    textSize(10);
-    strokeWeight(0.5);
-    text(i,speedometer_x+(((SCR/2)-15) * sin(mark)), speedometer_y+((SCR/2)-15) * cos(mark));
-  }
-  let needle = map(currentSpeed,0,maxSpeed,300,60);
-  strokeWeight(2);
-  line(speedometer_x, speedometer_y,speedometer_x + ((SCR/2-5) * sin(needle)),speedometer_y + ((SCR/2-5) * cos(needle)));
-}
-function signal()
-{
-  noStroke();
-  text("Signal: "+signalStrength+"%", windowWidth-170, windowHeight-13);
-  // if(signalStrength>75)
-  // {
-  //   img=loadImage('Pictures/Signal/WiFi_4.png');
-  // }
-  // else if(signalStrength<=75 && signalStrength>50)
-  // {
-  //   img=loadImage('Pictures/Signal/WiFi_3.png');
-  // }
-  // else if(signalStrength<=50 && signalStrength>25)
-  // {
-  //   img=loadImage('Pictures/Signal/WiFi_2.png');
-  // }
-  // else if(signalStrength<=25 && signalStrength>0)
-  // {
-  //   img=loadImage('Pictures/Signal/WiFi_1.png');
-  // }
-  // else
-  // {
-  //   img=loadImage('Pictures/Signal/WiFi_0.png');
-  // }
-  // image(img,0,0,100,100);
-  // let img1=loadImage('ABC.png');
-  // image(img1,0,0,1000,1000);
-}
-
-//battery done
-//throttle done
-//speedometer done
-//signal strength done
-//compass
-//add digital values for all
-//async in js

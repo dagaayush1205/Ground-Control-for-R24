@@ -1,6 +1,20 @@
 {
+  "name": "ground-control-for-r24",
+  "version": "1.0.0",
+  "description": "This is webpage WIP for R24 ground Control View the site at https://dagaayush1205.github.io/Ground-Control-for-R24/",
+  "main": "script.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
     "zeromq": "^5.3.1"
   }
 }
