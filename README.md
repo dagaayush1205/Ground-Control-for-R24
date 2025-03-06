@@ -13,4 +13,4 @@ to the client side(the frontend).
 Certain improvements that I would like to work on the future is to:
 1. Give the page a more interactive and modern look.
 2. To add a local map of the surrounding and display unexplored areas.
-3. add a cpp version of the publisher code. 
+3. add a cpp version of the publisher code 
